@@ -1,0 +1,52 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Transfer Command Api
+servers:
+  - url: http://localhost:8080/v1/transfers
+paths:
+  /:
+    post:
+      summary: Create a transfer
+      operationId: createTransferRequest
+      tags:
+        - TransferCommand
+      requestBody:
+        description: Transfer creation request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTransferRequest"
+      responses:
+        '201':
+          description: Transfer created
+        '400':
+          description: Account not found
+        '422':
+          description: Insufficient funds
+        default:
+          description: unexpected error
+
+components:
+  schemas:
+    CreateTransferRequest:
+      type: object
+      required:
+        - debtor
+        - creditor
+        - amount
+      properties:
+        debtor:
+          description: Debtor's bank account
+          type: string
+        creditor:
+          description: Creditor's bank account
+          type: string
+        amount:
+          description: Initial account's amount
+          type: number
+        currency:
+          description: Currency type
+          type: string
+          default: EUR

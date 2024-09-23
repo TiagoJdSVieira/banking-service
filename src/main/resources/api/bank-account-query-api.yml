@@ -1,0 +1,95 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Bank Account Query Api
+servers:
+  - url: http://localhost:8080/v1/bank-accounts
+paths:
+  /:
+    get:
+      summary: List of all bank accounts' information
+      operationId: getBankAccounts
+      tags:
+        - BankAccountQuery
+      parameters:
+        - name: page
+          in: query
+          description: The page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          description: The number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        '200':
+          description: A paginated list of bank accounts' information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountInformationResponse"
+        default:
+          description: unexpected error
+
+  /{iban}:
+    get:
+      summary: Information about a specific bank account
+      operationId: showBankAccountInformation
+      tags:
+        - BankAccountQuery
+      parameters:
+        - name: iban
+          in: path
+          required: true
+          description: The iban of the bank account to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountInformation"
+        '400':
+          description: Bank account not found
+        default:
+          description: unexpected error
+
+components:
+  schemas:
+    BankAccountInformationResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/BankAccountInformation"
+        pageInfo:
+          $ref: "./common-schemas-api.yml#/components/schemas/PageInfo"
+
+    BankAccountInformation:
+      type: object
+      properties:
+        iban:
+          description: Bank account's unique iban
+          type: string
+        holder:
+          description: Name of the bank account's holder
+          type: string
+        balance:
+          description: Current bank account's balance
+          type: number
+        status:
+          description: Bank account status
+          type: string
+        currency:
+          description: Currency type
+          type: string

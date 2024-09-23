@@ -1,0 +1,49 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Bank Account Command Api
+servers:
+  - url: http://localhost:8080/v1/bank-accounts
+paths:
+  /:
+    post:
+      summary: Create a bank account
+      operationId: createBankAccount
+      tags:
+        - BankAccountCommand
+      requestBody:
+        description: Bank account creation request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBankAccountRequest"
+      responses:
+        '201':
+          description: Bank account created
+        default:
+          description: unexpected error
+
+components:
+  schemas:
+    CreateBankAccountRequest:
+      type: object
+      required:
+        - holder
+        - amount
+      properties:
+        holder:
+          description: Name of the bank account's holder
+          type: string
+        amount:
+          description: Initial bank account's amount
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        currency:
+          description: Currency type
+          type: string
+        activate:
+          description: Should the account be activated after its creation
+          type: boolean
+          default: true

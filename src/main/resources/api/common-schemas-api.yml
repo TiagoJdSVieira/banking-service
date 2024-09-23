@@ -1,0 +1,18 @@
+components:
+  schemas:
+    PageInfo:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          description: The total number of pages
+        totalElements:
+          type: integer
+          format: int64
+          description: The total number of elements
+        page:
+          type: integer
+          description: The current page number
+        size:
+          type: integer
+          description: The size of the page (number of items per page)

@@ -1,0 +1,4 @@
+spring:
+  # Datasource
+  datasource:
+    url: jdbc:postgresql://db:5432/bankingdb
